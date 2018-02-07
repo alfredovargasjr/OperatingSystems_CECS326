@@ -9,21 +9,21 @@ static int PID = 0;
 //system memory
 struct memory {
   int size;                                                                     //size of Memory, number of blocks
-  int* data;                                                                    //array of data in memory, string values in blocks
+  int* data;                                                                    //array of data in memory, integer values in blocks
 } mem;
 
 //Memory Block Table of system memory
 struct MBT {
   int size;                                                                     //size of the MBT, same as memory size
-  int blocksAvailable;
+  int blocksAvailable;                                                          //number of blocks available to be used in memory
   bool * states;                                                                //state of that memory block, true/false. true = not free
 } mbt;
 
 //Process Control Block, process info
 struct pcb {
   int process_ID;                                                               //ID of proces
-  int pageSize;
-  int address;
+  int pageSize;                                                                 //number of blocks process contains
+  int address;                                                                  //address of the beginning of process
   int * page_table;                                                             //page table array for process
   pcb * nextPT;                                                                 //pointer to next PT
 };
@@ -44,9 +44,9 @@ int randomInt(){
 void Initialize_Mem(int mem_size){
   mem.size = mem_size;                                                          //Instantiate the number of blocks in system memory
   mbt.size = mem.size;                                                          //Instantiate the number of blocks in MBT
-  mem.data = new int[mem.size];                                              //Instantiate the data array for sytem memory
+  mem.data = new int[mem.size];                                                 //Instantiate the data array for sytem memory
   mbt.states = new bool[mbt.size];                                              //Instantiate the states array for MBT
-  for(int i = 0; i < 32; i++){
+  for(int i = 0; i < 32; i++){                                                  //Set the first 32 blocks to not free, reserved for OS
     mem.data[i] = 0;
     mbt.states[i] = true;
   }
@@ -104,7 +104,7 @@ void initiateProcess(){
       rq.tail = p;
     }
     rq.size++;                                                                  //add size to the ready queue
-    printProcessInformation(*p);
+    printProcessInformation(*p);                                                //call print function
   }
   else{
     cout << "\nNot enough blocks in memory for process. Process not initiated.";
@@ -133,12 +133,11 @@ void terminateProcess(int terminatePID){
         for(int i = 0; i < cur->pageSize; i++){                                   //itereate through the page_table to chance memory block states
           mbt.states[cur->page_table[i]] = false;                                   //mbt.states[block of current pagetable[i]]
         }
-        delete [] cur->page_table;
+        delete [] cur->page_table;                                              //delete the dynamic page table array
 
         if(prev != NULL){
           prev->nextPT = cur->nextPT;
-        }                                             //delete page table array
-        // cur->nextPT = NULL;
+        }
         mbt.blocksAvailable = mbt.blocksAvailable + cur->pageSize;              //new blocks will be available in memory
         cout << "\nProcess ID [" << cur->process_ID << "] has been terminated." << endl;
         if(rq.head == cur){
@@ -149,7 +148,7 @@ void terminateProcess(int terminatePID){
             rq.tail = prev;
           }
         }
-        delete cur;
+        delete cur;                                                             //delete the dynamic object
         rq.size--;
         return;
       }
