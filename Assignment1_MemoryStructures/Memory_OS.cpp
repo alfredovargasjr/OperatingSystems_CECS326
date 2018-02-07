@@ -188,18 +188,20 @@ void menu(){
               break;
       case 0:{
         if(rq.size != 0){
-          while(true){
+          bool exitMenu = false;
+          while(!exitMenu){
             cout << "\nProcesses Ready Queue Is Not Empty. Are You Sure You Want To Exit? ([1] Yes / [0] No)\nChoice: ";
             cin >> exitPrompt;
             switch(exitPrompt){
               case 1: clearProcessQueue();
                       return;
-              case 0: return;
+              case 0: exitMenu = true;
+                      break;
               default: cout << "\nInvalid Input.";
             }
           }
         }
-      } return;
+      }
       default: cout << "\nInvalid Input." <<  endl;
     }
   }
