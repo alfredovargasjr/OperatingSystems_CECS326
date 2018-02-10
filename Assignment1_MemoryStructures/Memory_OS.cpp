@@ -57,9 +57,17 @@ void Initialize_Mem(int mem_size){
 
 //print the Memory Block Table
 void printMBT(){
-  cout << "\nMBT: size[" << mbt.size << "]\tBlocksAvailable[" << mbt.blocksAvailable << "]" << endl;
+  cout << "\nMBT: size[" << mbt.size << "]\tBlocksAvailable[" << mbt.blocksAvailable << "]" << "\t[o = Free | * = Not Free]" << endl;
   for(int i = 0; i < mbt.size; i++){
-    cout << "Block[" << i << "]: " << mbt.states[i] << endl;
+    if((i) % 32 == 0){
+      cout << endl;
+    }
+    if(mbt.states[i]){
+      cout << "* ";
+    }
+    else{
+      cout << "o ";
+    }
   }
 }
 
@@ -67,8 +75,13 @@ void printMBT(){
 void printProcessInformation(const pcb & p){
   cout << "\nProcess ID:" << p.process_ID << "\nProcess Address: " << p.address << "\nProcess size: " << p.pageSize << endl;
   for(int i = 0; i < p.pageSize; i++){
-    cout << "Page[" << i << "]: " << p.page_table[i] << endl;
+    if(i % 10 == 0){
+      cout << endl;
+    }
+    cout << "[" << i << "]: ";
+    printf("%-7d", p.page_table[i]);
   }
+  cout << endl;
   printMBT();
 }
 
@@ -175,7 +188,7 @@ void menu(){
   int exitPrompt = 0;
   //stay in loop untill user prompts for return
   while(true){
-    cout << "\nMenu:\n[1]\tInitiate A Process\n[2]\tPrint Processes In Ready Queue\n[3]\tTerminate A Process\n[0]\tExit\n\nChoice: ";
+    cout << "\n\nMenu:\n[1]\tInitiate A Process\n[2]\tPrint Processes In Ready Queue\n[3]\tTerminate A Process\n[0]\tExit\n\nChoice: ";
     cin >> input;
     switch(input){
       case 1: initiateProcess();
