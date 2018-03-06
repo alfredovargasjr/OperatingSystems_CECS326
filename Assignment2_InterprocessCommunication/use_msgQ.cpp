@@ -88,6 +88,11 @@ void child_proc_two(int qid) {
 //Message Queue on Linux
 int main() {
 
+        /*
+        System call: msgget(key_t key, int msgflg)
+                key: key arguement for queue
+                bits: permissions of the message queue
+        */
         //acquire a message queue from the operating system, message queue id
         int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600);
 
@@ -97,6 +102,7 @@ int main() {
         if (cpid == 0) {
                 //call the child function       
                 child_proc_one(qid);
+                //process termination
                 exit(0);
         }
         //create the second child process using the fork() system call
@@ -104,6 +110,7 @@ int main() {
         if (cpid == 0) {  
                 //call the child function     
                 child_proc_two(qid);
+                //process termination
                 exit(0);
         }
 
@@ -112,5 +119,5 @@ int main() {
         msgctl(qid, IPC_RMID, NULL);
         cout << "parent proc: " << getpid()
                 << " now exits" << endl;
-        exit(0);
+        exit(0); //process termination
 }
