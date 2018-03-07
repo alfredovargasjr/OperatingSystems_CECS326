@@ -8,3 +8,13 @@
 #include <stdlib.h>
 
 using namespace std;
+
+int main(int n, char ** arg){
+    cout << "Sender, PID: " << getpid() << ", begins..." << endl;
+    cout << "\nEnter a Message to be sent from Sender Process (PID: " << getpid() << "): ";
+    string message;
+    cin >> message;
+    for(int i = 0; i < sizeof(arg); i++){
+        cout << & arg[i];
+    }
+}

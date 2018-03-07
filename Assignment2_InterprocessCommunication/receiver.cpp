@@ -8,3 +8,8 @@
 #include <stdlib.h>
 
 using namespace std;
+
+int main(){
+    cout << "Receiver, PID: " << getpid() << ", begins..." << endl;
+    cout << "Recevier Message Recevied: ";
+}

@@ -14,6 +14,15 @@ child process will execute sender.cpp
 */
 void child_proc_one(int qid) {
     cout << "Sender Process ID:\t" << getpid() << endl;
+    string s = "" + qid;
+    string file = "./sender";
+    char arg0 [s.length() + 1];
+    char path [file.length() + 1];
+    strcpy(arg0, s.c_str());
+    arg0[sizeof(arg0)] = '\0';
+    strcpy(path, file.c_str());
+    path[sizeof(path)] = '\0';
+    execl(path, arg0, (char*)NULL);
 }
 
 /*
