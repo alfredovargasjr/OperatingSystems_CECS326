@@ -34,8 +34,9 @@ void receive_msg(int qid){
     -remove message from the qid queue and place in buffer (msg)
     -msgtyp = 0, read first message in the queue
     */
-    msgrcv(qid, (struct msgbuf *)&msg, size, 0, 0); 
-    cout << "Receiver Process (PID: " << getpid() << ") receives message: " << msg.message << endl; 
+    msgrcv(qid, (struct msgbuf *)&msg, size, 10, 0);
+    cout << "Receiver Process (PID: " << getpid() << ") receives message: " << msg.message << endl;
+  
 }
 
 int main(int n, char ** arg){
