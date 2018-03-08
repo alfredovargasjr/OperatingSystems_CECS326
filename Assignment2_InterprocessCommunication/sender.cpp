@@ -29,6 +29,7 @@ void send_msg(int qid){
     strcpy(m, s.c_str());
     // create the buffer
     buf msg;
+    msg.mtype = 10;
     int size = sizeof(msg)-sizeof(long);
     strcat(msg.message, m);
     /*
