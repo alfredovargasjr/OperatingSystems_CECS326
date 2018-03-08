@@ -23,6 +23,7 @@ struct buf {
 -use system calls to write and read messages from message queue
 */
 void child_proc_one(int qid) {
+        //create the buffer using data structure
         buf msg;
         int size = sizeof(msg)-sizeof(long);
         
@@ -39,7 +40,7 @@ void child_proc_one(int qid) {
         msgrcv(qid, (struct msgbuf *)&msg, size, 113, 0);                                    
         cout << getpid() << ": gets message" << endl;
         //print greeeting from buffer (msg)
-        cout << "message: " << msg.greeting << endl;
+        msg.greeting << endl;
         //append string to msg.greeting
         strcat(msg.greeting, " and Adios.");
         cout << getpid() << ": sends reply" << endl;
@@ -54,7 +55,7 @@ void child_proc_one(int qid) {
         -add copy of message from buffer (msg) to the message queue qid
         */
         msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-        cout << getpid() << ": now exits" << endl;      
+        cout << getpid() << ": now exits" << endl;     
 }
 
 /*
@@ -84,7 +85,6 @@ void child_proc_two(int qid) {
         cout << "reply: " << msg.greeting << endl;
         cout << getpid() << ": now exits" << endl;
 }
-
  
 //Message Queue on Linux
 int main() {

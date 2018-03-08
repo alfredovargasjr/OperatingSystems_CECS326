@@ -18,10 +18,12 @@ struct buf {
 
 // convert char array to integer, return int
 int get_qid(char c []){
+    //return array as an integer
     return atoi(c);
 }
 
 void receive_msg(int qid){
+    //create buffer data structure
     buf msg;
     int size = sizeof(msg) - sizeof(long);
     /*

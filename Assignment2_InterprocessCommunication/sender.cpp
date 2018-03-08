@@ -18,6 +18,7 @@ struct buf {
 
 // convert char array to integer, return int
 int get_qid(char c []){
+    //return array as an integer
     return atoi(c);
 }
 
@@ -29,8 +30,10 @@ void send_msg(int qid){
     strcpy(m, s.c_str());
     // create the buffer
     buf msg;
+    //set the message type
     msg.mtype = 10;
     int size = sizeof(msg)-sizeof(long);
+    //copy m onto buffer
     strcat(msg.message, m);
     /*
     system call: msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg)
