@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <stdlib.h>
+#include <sstream>
 
 using namespace std;
 
@@ -14,15 +15,17 @@ child process will execute sender.cpp
 */
 void child_proc_one(int qid) {
     cout << "Sender Process ID:\t" << getpid() << endl;
-    string s = "" + qid;
-    string file = "./sender";
+    //use stringstream to get string value of integer qid
+    stringstream ss;
+    ss << qid;
+    //s = string(qid)
+    string s = ss.str();
     char arg0 [s.length() + 1];
-    char path [file.length() + 1];
+    //copy content of s ontp arg0 (arg0 + qid)
     strcpy(arg0, s.c_str());
     arg0[sizeof(arg0)] = '\0';
-    strcpy(path, file.c_str());
-    path[sizeof(path)] = '\0';
-    execl(path, arg0, (char*)NULL);
+
+    execl("./sender\0", arg0, (char*) NULL);
 }
 
 /*
@@ -30,6 +33,17 @@ child process will execute receiver.cpp
 */
 void child_proc_two(int qid) {
     cout << "Receiver Process ID:\t" << getpid() << endl;
+    //use stringstream to get string value of integer qid
+    stringstream ss;
+    ss << qid;
+    //s = string(qid)
+    string s = ss.str();
+    char arg0 [s.length() + 1];
+    //copy content of s ontp arg0 (arg0 + qid)
+    strcpy(arg0, s.c_str());
+    arg0[sizeof(arg0)] = '\0';
+
+    execl("./receiver\0", arg0, (char*) NULL);
 }
 
 int main(){

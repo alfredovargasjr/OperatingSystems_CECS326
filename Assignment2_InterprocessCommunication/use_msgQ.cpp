@@ -12,6 +12,7 @@
 using namespace std;
 
 // declare my global message buffer
+//data structure for the buffer that will be used in the message queue
 struct buf {
         long mtype; // required
         char greeting[50]; // message content
