@@ -23,8 +23,10 @@ void child_proc_one(int qid) {
     char arg0 [s.length() + 1];
     //copy content of s ontp arg0 (arg0 + qid)
     strcpy(arg0, s.c_str());
+    //add null terminator
     arg0[sizeof(arg0)] = '\0';
-
+    //execl(path, arguement0,..., null terminator) system call
+    //  - send the qid as arg0
     execl("./sender\0", arg0, (char*) NULL);
 }
 
@@ -42,7 +44,8 @@ void child_proc_two(int qid) {
     //copy content of s ontp arg0 (arg0 + qid)
     strcpy(arg0, s.c_str());
     arg0[sizeof(arg0)] = '\0';
-
+    //execl(path, arguement0,..., null terminator) system call
+    //  - send the qid as arg0
     execl("./receiver\0", arg0, (char*) NULL);
 }
 
