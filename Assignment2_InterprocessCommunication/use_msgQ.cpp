@@ -114,7 +114,11 @@ int main() {
                 key: key arguement for queue
                 bits: permissions of the message queue
         */
+		//system call: msgget(key_t key,int msgflg)
         //acquire a message queue from the operating system, message queue id
+		//	-IPC_PRIVATE: create message queue if key has value IPC_PRIVATE
+		//	-IPC_EXCL|IPC_CREAT: specific message flag
+		//	-0600: permissions given to the message queue
         int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600);
 
         //spawning two child processes using the fork() system call
@@ -137,6 +141,7 @@ int main() {
 
         while(wait(NULL) != -1); // waiting for both children to terminate
         //remove qid from the message queue, qid 
+		//	-IPC_RMID: remove qid message queue
         msgctl(qid, IPC_RMID, NULL);
         cout << "parent proc: " << getpid()
                 << " now exits" << endl;

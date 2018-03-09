@@ -44,12 +44,12 @@ void send_msg(int qid){
     -add copy of message from buffer (msg) to the message queue qid
     */
     msgsnd(qid, (struct msgbuf *)&msg, size, 0);
-    cout << "Sender Process (PID: " << getpid() << ") sends message: " << s << endl;
+    cout << "[Sender] Sender Process (PID: " << getpid() << ") sends message: " << s << endl;
 }
 
 //main function with passed arguement from execl(path, arg0, arg1, ....) system call
 int main(int n, char ** arg){
-    cout << "Sender, PID: " << getpid() << ", begins..." << endl;
+    cout << "[Sender] Sender, PID: " << getpid() << ", begins..." << endl;
     // get arguement from system call, call function to return int value of arg0
     int qid = get_qid(&arg[0][0]);
     send_msg(qid);

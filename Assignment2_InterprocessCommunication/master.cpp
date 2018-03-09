@@ -55,9 +55,9 @@ int main(){
             key: key arguement for queue
             bits: permissions of the message queue
     */
-    //acquire a message queue from the operating system, message queue id
+    //acquire a message queue from the operating system (kernel), message queue id
     int qid = msgget(IPC_PRIVATE, IPC_EXCL|IPC_CREAT|0600);
-    cout << "Message Queue ID:\t" << qid << endl;
+    cout << "[Master] Message Queue ID:\t" << qid << endl;
 
     //spawning two child processes using the fork() system call
     pid_t cpid = fork();
@@ -67,6 +67,7 @@ int main(){
             //call the child function       
             child_proc_one(qid);
             //process termination
+            cout << "[Master] child process 1 Terminated." << endl;
             exit(0);
     }
     
@@ -76,11 +77,13 @@ int main(){
             //call the child function     
             child_proc_two(qid);
             //process termination
+            cout << "[Master] child process 2 Terminated." << endl;
             exit(0);
     }
 
     while(wait(NULL) != -1); // waiting for both children to terminate
     //remove qid from the message queue, qid 
     msgctl(qid, IPC_RMID, NULL);
+    cout << "[Master] Master Process terminated." << endl;
     exit(0); //process termination
 }

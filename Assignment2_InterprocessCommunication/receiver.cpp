@@ -37,12 +37,12 @@ void receive_msg(int qid){
     -msgtyp = 0, read first message in the queue
     */
     msgrcv(qid, (struct msgbuf *)&msg, size, 10, 0);
-    cout << "Receiver Process (PID: " << getpid() << ") receives message: " << msg.message << endl;
+    cout << "[Receiver] Receiver Process (PID: " << getpid() << ") receives message: " << msg.message << endl;
   
 }
 
 int main(int n, char ** arg){
-    cout << "Receiver, PID: " << getpid() << ", begins..." << endl;
+    cout << "[Receiver] Receiver, PID: " << getpid() << ", begins..." << endl;
     // get qid from arg0
     int qid = get_qid(&arg[0][0]);
     receive_msg(qid);
