@@ -14,7 +14,7 @@ using namespace std;
 child process will execute sender.cpp
 */
 void child_proc_one(int qid) {
-    cout << "Sender Process ID:\t" << getpid() << endl;
+    cout << "[Master] Child Process 1 ID:\t" << getpid() << endl;
     //use stringstream to get string value of integer qid
     stringstream ss;
     ss << qid;
@@ -34,7 +34,7 @@ void child_proc_one(int qid) {
 child process will execute receiver.cpp
 */
 void child_proc_two(int qid) {
-    cout << "Receiver Process ID:\t" << getpid() << endl;
+    cout << "[Master] Child Process 2 ID:\t" << getpid() << endl;
     //use stringstream to get string value of integer qid
     stringstream ss;
     ss << qid;

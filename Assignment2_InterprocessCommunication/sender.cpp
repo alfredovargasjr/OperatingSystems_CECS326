@@ -34,7 +34,7 @@ void send_msg(int qid){
     msg.mtype = 10;
     int size = sizeof(msg)-sizeof(long);
     //copy m onto buffer
-    strcat(msg.message, m);
+    strcpy(msg.message, m);
     /*
     system call: msgsnd(int msqid, const void *msgp, size_t msgsz, int msgflg)
             -msqid: id of the message queue created by the OS
