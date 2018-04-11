@@ -72,6 +72,7 @@ main(int argc, char* argv[])
 // process will sell seats
 void sell_seats()
 {
+  // value determines if the process will continue selling seats
   int all_out = 0;
   srand ( (unsigned) getpid() );
   while ( !all_out) {   /* loop to sell all seats */

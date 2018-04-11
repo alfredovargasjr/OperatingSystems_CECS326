@@ -13,4 +13,5 @@ struct CLASS {
   char title[50];
   int seats_left;
 };
+
 #endif
