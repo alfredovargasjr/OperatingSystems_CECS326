@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
                execl("shmc1", pname, ascshmid, (char *)0);
                // catch error and print message
                perror ("execl failed");
-               // terminate process
+               // terminate the calling process
                exit (2);
     }
   }
