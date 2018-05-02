@@ -60,13 +60,11 @@ main(int argc, char* argv[])
     // terminate process
     exit(2);
   }
-  // point to the shared mem segment
+  // point to the CLASS object in the shared mem segment
   class_ptr = (struct CLASS *)memptr;
 
-  /*!CRITICAL SECTION!*/
-    // call sell_seats()
+  // call sell_seats()
     sell_seats();
-  /*!CRITICAL SECTION!*/
 
   // shmdt() system call detaches the shared mem segment
   ret = shmdt(memptr);
@@ -81,9 +79,17 @@ void sell_seats()
   int all_out = 0;
   srand ( (unsigned) getpid() );
 
-  while ( !all_out) {   /* loop to sell all seats */
+  while ( !all_out) {
+  /* loop to sell all seats */
     // check if seats are available in shared mem segment
-    sem_wait(class_ptr->sem);
+    sleep ( (unsigned)rand()%5 + 1);
+/*!!CRITICAL SECTION!!*/
+    /*
+      wait() call for the semaphore
+      - sem_wait(sem_t *sem)
+        - sem: address to the pointer
+    */
+    sem_wait(&class_ptr->sem);
     if (class_ptr->seats_left > 0) {
       // sleep for random 0 - 5 ms
       sleep ( (unsigned)rand()%5 + 1);
@@ -98,7 +104,13 @@ void sell_seats()
         all_out++;
         cout << pname << " sees no seats left" << endl;
       }
-    sem_post(class_ptr->sem);
+    /*
+      post() call for the semaphore
+      - sem_post(sem_t *sem)
+        - sem: address to the pointer
+    */
+    sem_post(&class_ptr->sem);
+/*!!CRITICAL SECTION!!*/
     // sleep for random 0 - 5 ms
     sleep ( (unsigned)rand()%10 + 1);
   }

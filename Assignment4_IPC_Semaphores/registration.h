@@ -9,7 +9,7 @@
 
 // data structure that will be used for the shared mem segment
 struct CLASS {
-  sem_t * sem;
+  sem_t sem;
   char class_number[6];
   char date[7];
   char title[50];

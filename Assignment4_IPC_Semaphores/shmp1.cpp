@@ -22,7 +22,7 @@ using namespace std;
     - title = "operating systems"
     - seats_available = 15
 */
-sem_t * semaphore;
+sem_t semaphore;
 CLASS myclass = {semaphore ,"1001", "120186", "Operating Systems", 15 };
 
 //replace all instances of NCHILD to 3
@@ -91,14 +91,9 @@ int main(int argc, char *argv[])
 int shm_init(void *shm_ptr)
 {
   /* create, initialize semaphore
-      sempahore system call
+      semaphore system call
       - int sem_init(sem_t *sem, int pshared, unsigned int value)
   */
-  if( sem_init(myclass.sem,1,1) < 0)
-    {
-      perror("semaphore initilization");
-      exit(1);
-    }
 
   int shmid;
   /*
@@ -140,8 +135,22 @@ int shm_init(void *shm_ptr)
   }
   // memcpy(destination, source, size num)
   // - copy values of myclass to memory block
-  memcpy (shm_ptr, (void *) & myclass, sizeof(CLASS) );
-  // memcpy (shm_ptr + sizeof(myclass), &sem, sizeof(sem));
+  memcpy (shm_ptr, (void *) & myclass, sizeof(CLASS));
+  // class_ptr: pointer to the CLASS object in the shared mem segment
+  CLASS * class_ptr = (struct CLASS *)shm_ptr;
+  // initialize the semaphore form the shared memory segment
+  /*
+    System call for POSIX semaphores, using a shared memory segment
+    - int sem_init(sem_t *sem, int pshared, unsigned int value)
+      - sem: address to semaaphore
+      - pshared: 1 if going to be shared between processes
+      - value: initial value of the semaphore
+  */
+  if( sem_init(&class_ptr->sem,1,1) < 0)
+    {
+      perror("semaphore initilization");
+      exit(3);
+  }
   // return id of shared mem segment
   return (shmid);
 }
@@ -165,6 +174,17 @@ void wait_and_wrap_up(int child[], void *shm_ptr, int shmid)
 
     }
   }
+  // - pointer to the CLASS object in the shared memory segment
+  CLASS * class_ptr = (struct CLASS *)shm_ptr;
+  /* delete the semaphore
+  //  - sem_destroy(sem_t *sem)
+  //    - sem: pointer to semaphore
+  */
+  if (sem_destroy(&class_ptr->sem) < 0){
+    perror("failed to destroy semaphore");
+    exit(1);
+  }
+
   cout << "Parent removing shm" << endl;
   // shmdt() system call detaches the shared mem segment shm_ptr
   shmdt (shm_ptr);
